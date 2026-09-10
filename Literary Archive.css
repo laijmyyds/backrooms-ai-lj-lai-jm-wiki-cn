@@ -1,0 +1,465 @@
+/*
+    Powered on 2026/07/29 15:24:43
+    [2026 Wikidot Theme]
+    [Theme - Literary Archive] Created by laijm
+    CC BY-SA 3.0
+*/
+
+@import url("https://github.backroomswiki.cn/Old_BHL/css/liminal.css");
+@import url(https://github.backroomswiki.cn/Old_BHL/css/sidebar.css);
+@import url("https://github.backroomswiki.cn/stickers/css/bml_1.css");
+
+:root {
+   --logo-image: url("https://backrooms-ai-lj-lai-jm.wikidot.com/local--files/site:start-wi-page/logo");
+   --header-title: "AI\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0LJ\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0LAI\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0JM";
+   --header-subtitle: "智能\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0垃圾\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0善人\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0天才";
+}
+
+#skrollr-body {
+    background-image: none;
+    background-color: rgba(160, 185, 145, 0.06);
+}
+
+body {
+    background: #f5f8f3;
+    background-image: 
+        radial-gradient(ellipse at 20% 30%, rgba(180, 200, 170, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(160, 190, 145, 0.04) 0%, transparent 50%);
+    font-family: Inter, "Noto Sans SC", "Noto Sans TC", Arimo, Verdana, Geneva, sans-serif;
+    color: #3a4a35;
+}
+
+#page-content {
+    background: transparent;
+}
+
+a {
+    color: #5a7a4a;
+    transition: color 0.2s ease;
+}
+a:hover {
+    color: #3a6a3a;
+    text-decoration: none;
+}
+a:visited {
+    color: #6a7a5a;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #3a5a35;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    font-family: Inter, "Noto Sans SC", "Noto Sans TC", sans-serif;
+}
+
+h1::after, h2::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, #8aaa7a, transparent);
+    margin-top: 6px;
+    border-radius: 2px;
+    opacity: 0.25;
+}
+
+p {
+    color: #3a4a35;
+    line-height: 1.8;
+}
+
+blockquote, .blockquote {
+    background: rgba(235, 242, 230, 0.12);
+    border-left: 3px solid #8aaa7a;
+    border-radius: 8px;
+    padding: 14px 20px;
+    color: #4a5a45;
+    margin: 1rem 0;
+    box-shadow: 0 1px 8px rgba(138, 170, 122, 0.02);
+}
+
+.styled-quote {
+    background-color: rgba(248, 252, 246, 0.7);
+    border-left: 0.5rem solid #8aaa7a;
+    padding: 0.1rem 1rem;
+    margin: 0.5rem 0 0.5rem 0.25rem;
+    box-shadow: 0.05rem 0.1rem 0.3rem rgba(25, 20, 16, 0.08);
+    border-radius: 0 8px 8px 0;
+}
+
+.dark-styled-quote {
+    background-color: rgba(72, 69, 60, 0.85);
+    border-left: 0.5rem solid rgba(138, 170, 122, 0.6);
+    color: #f0f4ed;
+    padding: 0.1rem 1rem;
+    margin: 0.5rem 0 0.5rem 0.25rem;
+    box-shadow: 0.05rem 0.1rem 0.3rem rgba(25, 20, 16, 0.25);
+    border-radius: 0 8px 8px 0;
+}
+.dark-styled-quote a {
+    color: #8aaa7a;
+}
+.dark-styled-quote a:hover {
+    color: #aac89a;
+}
+
+.lightblock {
+    background-color: rgba(248, 252, 246, 0.6);
+    padding: 0.01rem 1rem;
+    margin: 0.5rem 0 0.5rem 0.25rem;
+    box-shadow: 0 0.2rem 0.3rem rgba(25, 20, 16, 0.06);
+    border-radius: 8px;
+    border: 1px solid rgba(160, 185, 145, 0.04);
+}
+
+.darkblock {
+    background-color: rgba(72, 69, 60, 0.85);
+    color: #eee;
+    padding: 0.01rem 1rem;
+    margin: 0.5rem 0 0.5rem 0.25rem;
+    box-shadow: 0 0.2rem 0.3rem rgba(25, 20, 16, 0.2);
+    border-radius: 8px;
+}
+
+.footnotes-footer {
+    border-top: 1px solid rgba(160, 185, 145, 0.08);
+    padding-top: 1rem;
+    margin-top: 2rem;
+}
+.footnotes-footer .footnote-footer {
+    color: #5a6a55;
+    font-size: 0.85rem;
+}
+
+ul, ol {
+    color: #3a4a35;
+    padding-left: 1.5rem;
+}
+ul li, ol li {
+    margin-bottom: 0.25rem;
+}
+ul ul, ol ol, ul ol, ol ul {
+    margin-top: 0.25rem;
+}
+
+table.wiki-content-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+table.wiki-content-table th {
+    background: rgba(160, 185, 145, 0.1);
+    color: #3a5a35;
+    font-weight: 600;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 2px solid rgba(160, 185, 145, 0.15);
+}
+table.wiki-content-table td {
+    padding: 0.4rem 0.8rem;
+    border-bottom: 1px solid rgba(160, 185, 145, 0.04);
+}
+table.wiki-content-table tr:hover td {
+    background: rgba(160, 185, 145, 0.03);
+}
+
+.code, .code pre, .code-block {
+    background: rgba(248, 252, 246, 0.5);
+    border: 1px solid rgba(160, 185, 145, 0.06);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    font-family: Consolas, monaco, monospace;
+    font-size: 0.85rem;
+    color: #3a4a35;
+    overflow-x: auto;
+    white-space: pre-wrap;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.scp-image-block {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(138, 170, 122, 0.04);
+    border: 1px solid rgba(160, 185, 145, 0.04);
+}
+.scp-image-block .scp-image-caption {
+    padding: 0.4rem 1rem;
+    color: #5a6a55;
+    font-size: 0.85rem;
+    background: rgba(248, 252, 246, 0.3);
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(160, 185, 145, 0.1), transparent);
+    margin: 20px 0;
+}
+
+#footer {
+    background: rgba(72, 69, 60, 0.06);
+    border-top: 1px solid rgba(160, 185, 145, 0.06);
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+    border-radius: 12px 12px 0 0;
+}
+#footer, #footer a {
+    color: #5a6a55;
+}
+#footer a:hover {
+    color: #3a6a3a;
+}
+
+.page-options-bottom {
+    background: rgba(248, 252, 246, 0.3) !important;
+    border-radius: 14px !important;
+    padding: 8px 16px !important;
+    margin-top: 16px !important;
+    border: 1px solid rgba(160, 185, 145, 0.04) !important;
+}
+
+#edit-button,
+#pagerate-button,
+#tags-button,
+#discuss-button,
+#history-button,
+#file-button,
+#files-button,
+#print-button,
+#site-tools-button,
+#more-options-button,
+#edit-sections-button,
+#edit-append-button,
+#edit-meta-button,
+#watchers-button,
+#backlinks-button,
+#view-source-button,
+#parent-page-button,
+#page-block-button,
+#rename-move-button,
+#delete-button {
+    display: inline-block !important;
+    padding: 6px 18px !important;
+    margin: 0 4px !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #4a5a45 !important;
+    font-size: 0.85rem !important;
+    font-weight: 450 !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    border: 1px solid rgba(160, 185, 145, 0.04) !important;
+    box-shadow: none !important;
+}
+
+#edit-button:hover,
+#pagerate-button:hover,
+#tags-button:hover,
+#discuss-button:hover,
+#history-button:hover,
+#file-button:hover,
+#files-button:hover,
+#print-button:hover,
+#site-tools-button:hover,
+#more-options-button:hover,
+#edit-sections-button:hover,
+#edit-append-button:hover,
+#edit-meta-button:hover,
+#watchers-button:hover,
+#backlinks-button:hover,
+#view-source-button:hover,
+#parent-page-button:hover,
+#page-block-button:hover,
+#rename-move-button:hover,
+#delete-button:hover {
+    background: rgba(138, 170, 122, 0.08) !important;
+    border-color: rgba(138, 170, 122, 0.2) !important;
+    color: #3a6a3a !important;
+    text-decoration: none !important;
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 2px 16px rgba(138, 170, 122, 0.05) !important;
+}
+
+#edit-button {
+    background: rgba(138, 170, 122, 0.08) !important;
+    border-color: rgba(138, 170, 122, 0.1) !important;
+    color: #4a6a3a !important;
+}
+#edit-button:hover {
+    background: rgba(138, 170, 122, 0.18) !important;
+    border-color: #8aaa7a !important;
+    color: #3a5a2a !important;
+}
+
+#delete-button:hover {
+    background: rgba(180, 120, 120, 0.08) !important;
+    border-color: rgba(180, 120, 120, 0.2) !important;
+    color: #8a5a5a !important;
+}
+
+#page-rate-widget-box {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: rgba(248, 252, 246, 0.4) !important;
+    border-radius: 20px !important;
+    padding: 2px 6px !important;
+    border: 1px solid rgba(160, 185, 145, 0.04) !important;
+    margin: 0 4px !important;
+}
+#page-rate-widget-box .rate-points {
+    color: #4a5a45 !important;
+    font-weight: 500 !important;
+    padding: 0 8px !important;
+}
+#page-rate-widget-box a {
+    padding: 4px 12px !important;
+    border-radius: 16px !important;
+    color: #5a7a4a !important;
+    transition: all 0.25s ease !important;
+    background: transparent !important;
+    border: none !important;
+}
+#page-rate-widget-box a:hover {
+    background: rgba(138, 170, 122, 0.08) !important;
+    color: #3a6a3a !important;
+    text-decoration: none !important;
+    transform: translateY(-1px) !important;
+}
+#page-rate-widget-box .cancel {
+    display: none !important;
+}
+
+.page-options-bottom .separator,
+#page-options-bottom .separator {
+    color: rgba(160, 185, 145, 0.15) !important;
+    padding: 0 2px !important;
+}
+
+.page-tags {
+    margin-top: 8px !important;
+}
+.page-tags .tags-label {
+    color: #5a6a55 !important;
+    font-weight: 400 !important;
+    margin-right: 6px !important;
+    font-size: 0.85rem !important;
+}
+.page-tags a {
+    display: inline-block !important;
+    padding: 2px 14px !important;
+    margin: 0 3px !important;
+    border-radius: 14px !important;
+    background: rgba(138, 170, 122, 0.06) !important;
+    color: #5a7a4a !important;
+    font-size: 0.82rem !important;
+    transition: all 0.25s ease !important;
+    border: 1px solid transparent !important;
+}
+.page-tags a:hover {
+    background: rgba(138, 170, 122, 0.12) !important;
+    border-color: rgba(138, 170, 122, 0.15) !important;
+    color: #3a6a3a !important;
+    text-decoration: none !important;
+    transform: translateY(-1px) !important;
+}
+
+#top-bar div.mobile-top-bar > ul > li > a, #top-bar div.top-bar > ul > li > a {
+    color: #666;
+    border-radius: 20px 20px 0px 0px;
+    background: rgba(var(--pale-gray-monochrome), .7);
+}
+
+#top-bar div.mobile-top-bar > ul > li > ul, #top-bar div.top-bar > ul > li > ul {
+    border-radius: 0px 0px 20px 20px;
+    background: rgba(var(--pale-gray-monochrome), .5);
+}
+
+#top-bar div.mobile-top-bar > ul > li > ul > li > a, #top-bar div.top-bar > ul > li > ul > li > a {
+    color: #666;
+}
+
+#side-bar .heading {
+    background: #bababa;
+    color: white;
+    border-left: 3px solid #4a6a3a;
+}
+
+#side-bar .menu-item > p > a:hover {
+    background: rgba(69, 141, 138, 0.25);
+}
+
+#main-content::before {
+    content: '';
+    background: rgba(69, 141, 138, 0.15);
+}
+
+#login-status a {
+    color: #6a8a5a;
+}
+
+#login-status #account-options ul li {
+    background: rgba(0, 0, 0, 0) !important;
+    border: 0.6mm ridge rgba(86, 118, 70, 0.3) !important;
+}
+
+#login-status #account-options ul li a {
+    background: rgba(0, 0, 0, 0) !important;
+}
+
+#login-status #account-options ul {
+    background: rgba(106, 138, 90, 0.4) !important;
+}
+
+#login-status #account-options {
+    background: rgba(106, 138, 90, 0.4) !important;
+    border: 0.6mm ridge rgba(86, 118, 70, 0.3, .5) !important;
+}
+
+#login-status #account-options ul li:hover {
+    background: rgba(106, 138, 90, 1) !important;
+}
+
+#login-status #account-options ul li a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    -webkit-box-align: center;
+    color: white;
+    font-weight: bold !important;
+}
+
+#login-status #account-options ul {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 2em;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: .85em;
+    display: grid;
+}
+
+a#account-topbutton {
+    border: 0 !important;
+}
+
+.open-menu {
+    background-image: url("https://imgurl.diadi.cn/imgs/2026/09/bafa4b6865635de8.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 85% 85%;
+    background-color: #cbdfcd;
+}
+
+#header > #top-bar > div.mobile-top-bar > div.open-menu > p > a {
+    color: black !important;
+}
