@@ -464,7 +464,7 @@ a#account-topbutton {
     color: black !important;
 }
 
-.button.btn {
+#search-top-box-form > input, #search-top-box-form > input.button.btn[type=submit] {
   padding: 8px 16px;
   border-radius:10px;
   border:1px solid rgba(138, 170, 122, 0.12);
@@ -473,7 +473,7 @@ a#account-topbutton {
   cursor:pointer;
   transition:0.2s ease;
 }
-.button.btn:hover {
+#search-top-box-form > input, #search-top-box-form > input.button.btn[type=submit]:hover {
   background: linear-gradient(135deg, rgba(138, 170, 122, 0.14), rgba(74, 122, 58, 0.07));
   transform: translateY(-1px);
 }
