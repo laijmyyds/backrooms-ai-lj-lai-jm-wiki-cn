@@ -463,3 +463,24 @@ a#account-topbutton {
 #header > #top-bar > div.mobile-top-bar > div.open-menu > p > a {
     color: black !important;
 }
+
+#search-top-box-button,
+.search-button {
+    padding: 6px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(160, 185, 145, 0.2);
+    background: linear-gradient(135deg, rgba(138, 170, 122, 0.12), rgba(74, 122, 58, 0.06));
+    color: #4a6a3a;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#search-top-box-button:hover,
+.search-button:hover {
+    background: linear-gradient(135deg, rgba(138, 170, 122, 0.2), rgba(74, 122, 58, 0.1));
+    border-color: rgba(138, 170, 122, 0.35);
+    color: #3a5a2a;
+    transform: translateY(-1px);
+}
