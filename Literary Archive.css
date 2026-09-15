@@ -607,3 +607,125 @@ a#account-topbutton {
     width: 100%;
     height: 7.5rem;
 }
+
+.sd-container {
+    --sd-border: 59, 59, 59;
+    --sd-border-secondary: 0, 0, 0;
+    --sd-border-deadzone: 30, 45, 30;
+    --sd-symbol: 59, 59, 59;
+    --sd-symbol-secondary: 255, 255, 255;
+    --sd-bullets: 59, 59, 59;
+    --sd-text: var(--swatch-text-secondary-color);
+}
+
+.top-box {
+    border-color: rgb(59, 54, 59) !important;
+}
+
+.bottom-box ul li {
+    color: rgb(59, 54, 59) !important;
+}
+
+.bottom-box ul li:before {
+    background: rgb(59, 54, 59) !important;
+}
+
+.top-box .gradient-box {
+    background: linear-gradient(90deg, rgba(59, 54, 59, 1) 0%, rgba(59, 54, 59, 0) 36%) !important;
+}
+
+.header-diamond {
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 300.9 284.5' style='enable-background:new 0 0 300.9 284.5;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%233b363b;%7D .st1%7Bfill:%233b363b;%7D%0A%3C/style%3E%3Cg%3E%3Cpolygon class='st1' points='73.4,32.6 0,105.4 13.6,105.4 86.4,32.6 '/%3E%3Cpolygon class='st1' points='26.5,105.4 40.1,105.4 112.9,32.6 99.3,32.6 '/%3E%3C/g%3E%3Cpolyline class='st1' points='287.3,105.4 214.5,32.6 227.5,32.6 287.3,91.9 '/%3E%3Cpolygon class='st1' points='274.4,105.4 260.8,105.4 188,32.6 201.6,32.6 '/%3E%3C/svg%3E") !important;
+}
+
+.top-box.class-unknown .header-diamond {
+    filter: none !important;
+}
+
+.top-box.class-unknown:before,
+.top-box.class-unknown .header-diamond .diamond-pattern {
+    opacity: 0.15 !important;
+}
+
+.top-box .header-diamond .diamond-image {
+    filter: brightness(0%) invert(100%);
+}
+
+.top-box.class-0,
+.header-diamond .diamond-color.class-0 {
+    background: rgb(184, 243, 208) !important;
+}
+
+.top-box.class-1,
+.header-diamond .diamond-color.class-1 {
+    background: rgb(126, 206, 159) !important;
+}
+
+.top-box.class-2,
+.header-diamond .diamond-color.class-2 {
+    background: rgb(61, 152, 99) !important;
+}
+
+.top-box.class-3,
+.header-diamond .diamond-color.class-3 {
+    background: rgb(46, 127, 80) !important;
+}
+
+.top-box.class-4,
+.header-diamond .diamond-color.class-4 {
+    background: rgb(35, 91, 58) !important;
+}
+
+.top-box.class-5,
+.header-diamond .diamond-color.class-5 {
+    background: rgb(2, 48, 23) !important;
+}
+
+.top-box.class-unknown,
+.header-diamond .diamond-color.class-unknown,
+.top-box.class-未知,
+.header-diamond .diamond-color.class-未知 {
+    background: rgb(59, 64, 59) !important;
+}
+
+.top-box.class-habitable,
+.header-diamond .diamond-color.class-habitable,
+.top-box.class-宜居,
+.header-diamond .diamond-color.class-宜居 {
+    background: rgb(214, 255, 231) !important;
+}
+
+.top-box.class-deadzone,
+.header-diamond .diamond-color.class-deadzone,
+.top-box.class-死区,
+.header-diamond .diamond-color.class-死区 {
+    background: rgb(30, 45, 30) !important;
+}
+
+.top-box.class-pending,
+.header-diamond .diamond-color.class-pending,
+.top-box.class-待定,
+.header-diamond .diamond-color.class-待定 {
+    background: rgb(180, 190, 178) !important;
+}
+
+.top-box.class-n-a,
+.header-diamond .diamond-color.class-n-a,
+.top-box.class-不适用,
+.header-diamond .diamond-color.class-不适用 {
+    background: rgb(40, 48, 40) !important;
+}
+
+.top-box.class-amended,
+.header-diamond .diamond-color.class-amended,
+.top-box.class-修正,
+.header-diamond .diamond-color.class-修正 {
+    background: rgb(150, 170, 145) !important;
+}
+
+.top-box.class-omega,
+.header-diamond .diamond-color.class-omega,
+.top-box.class-终焉,
+.header-diamond .diamond-color.class-终焉 {
+    background: rgb(30, 60, 50) !important;
+}
