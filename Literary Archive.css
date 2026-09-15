@@ -524,50 +524,6 @@ a#account-topbutton {
    filter: brightness(0%) invert(100%);
 }
  
-.top-box.class-0,
-.header-diamond .diamond-color.class-0 {
-   background: rgb(184, 243, 208) !important;
-}
- 
-.top-box.class-1,
-.header-diamond .diamond-color.class-1 {
-   background: rgb(126, 206, 159) !important;
-}
- 
-.top-box.class-2,
-.header-diamond .diamond-color.class-2 {
-   background: rgb(61, 152, 99) !important;
-}
- 
-.top-box.class-3,
-.header-diamond .diamond-color.class-3 {
-   background: rgb(46, 127, 80) !important;
-}
- 
-.top-box.class-4,
-.header-diamond .diamond-color.class-4 {
-   background: rgb(35, 91, 58) !important;
-}
- 
-.top-box.class-5,
-.header-diamond .diamond-color.class-5 {
-   background: rgb(2, 48, 23) !important;
-}
- 
-.top-box.class-unknown,
-.header-diamond .diamond-color.class-unknown,
-.top-box.class-未知,
-.header-diamond .diamond-color.class-未知 {
-   background: rgb(59, 64, 59) !important;
-}
- 
-.top-box.class-habitable,
-.header-diamond .diamond-color.class-habitable,
-.top-box.class-宜居,
-.header-diamond .diamond-color.class-宜居 {
-   background: rgb(214, 255, 231) !important;
-}
-
 #header h1 {
     width: 100%;
 }
