@@ -554,3 +554,43 @@ a#account-topbutton {
 .header-diamond .diamond-color.class-宜居 {
    background: rgb(214, 255, 231) !important;
 }
+
+#header h1 {
+     width: 100%;
+}
+#header h1 a, #header h1 a:before {
+     width: fit-content;
+     transition: 0.2s;
+     position: relative;
+     bottom: 0;
+     color: rgb(var(--white-monochrome));
+}
+#header h1 a:hover:before,
+#header h2 span::before:hover{
+     text-shadow: 0px 5px 3px rgba(0,0,0,0.3);
+     bottom: 3px;
+}
+#header h1, #header h1 a {
+     position: absolute;
+     top: 1.4rem;
+     margin: 0;
+     display: flex;
+     justify-content: center;
+     z-index: 0;
+     height: 1.5rem;
+}
+#header h2, #header h2 span, #header h2 span::before {
+     position: absolute;
+     top: 2.05rem;
+     margin: 0;
+     width: 100%;
+     display: flex;
+     justify-content: center;
+     font-weight: bold;
+}
+#header h2 span::before {
+     color: rgb(var(--white-monochrome));
+}
+#header h1 a::before, #header h2 span::before {
+     text-shadow: 0px 2px 3px rgba(0,0,0,0.8);
+}
