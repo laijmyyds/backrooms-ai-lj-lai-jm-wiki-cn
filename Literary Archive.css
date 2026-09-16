@@ -15,9 +15,6 @@
 
 /* ==========================================================================
    External imports
-   - Liminal base theme
-   - Sidebar styling
-   - BML sticker set
    ========================================================================== */
 @import url("https://github.backroomswiki.cn/Old_BHL/css/liminal.css");
 @import url(https://github.backroomswiki.cn/Old_BHL/css/sidebar.css);
@@ -25,10 +22,6 @@
 
 /* ==========================================================================
    Theme variables
-   - Core identity and branding strings
-   - Header / subtitle text
-   - Decorative text variables
-   - Background image placeholder (replace with your own base64)
    ========================================================================== */
 :root {
     --theme-base: "Liminal Theme";
@@ -38,7 +31,7 @@
     /* Site logo */
     --logo-image: url("https://backrooms-ai-lj-lai-jm.wikidot.com/local--files/site:start-wi-page/logo");
 
-    /* Header title (uses non-breaking spaces to control spacing) */
+    /* Header title */
     --header-title: "AI\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0LJ\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0LAI\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0JM";
 
     /* Decorative / easter-egg variables */
@@ -56,36 +49,37 @@
 }
 
 /* ==========================================================================
-   Skrollr body background override
-   - Removes default image and applies a very light green tint
+   Skrollr body background
    ========================================================================== */
 #skrollr-body {
-    background-image: none;
+    background-image:
+        linear-gradient(to bottom, rgba(87, 116, 104, 0.2), #f5f8f3 162px),
+        var(--green-wall-base);
+    background-repeat: repeat;
+    background-size: 600px;
+    width: 100%;
+    height: 7.5rem;
     background-color: rgba(160, 185, 145, 0.06);
 }
 
 /* ==========================================================================
    Global body styling
-   - Light green background with subtle radial gradients
-   - Base font stack and text color
    ========================================================================== */
 body {
     background: #f5f8f3;
-    background-image: 
+    background-image:
         radial-gradient(ellipse at 20% 30%, rgba(180, 200, 170, 0.06) 0%, transparent 60%),
         radial-gradient(ellipse at 80% 70%, rgba(160, 190, 145, 0.04) 0%, transparent 50%);
     font-family: Inter, "Noto Sans SC", "Noto Sans TC", Arimo, Verdana, Geneva, sans-serif;
     color: #3a4a35;
 }
 
-/* Main content area should stay transparent so body background shows through */
 #page-content {
     background: transparent;
 }
 
 /* ==========================================================================
    Link styles
-   - Muted green palette, smooth color transition
    ========================================================================== */
 a {
     color: #5a7a4a;
@@ -101,8 +95,6 @@ a:visited {
 
 /* ==========================================================================
    Headings
-   - Consistent green tone, medium weight, slight letter spacing
-   - Decorative underline for h1 / h2
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
     color: #3a5a35;
@@ -132,7 +124,6 @@ p {
 
 /* ==========================================================================
    Blockquotes
-   - Soft green background, left accent border, rounded corners
    ========================================================================== */
 blockquote, .blockquote {
     background: rgba(235, 242, 230, 0.12);
@@ -144,7 +135,6 @@ blockquote, .blockquote {
     box-shadow: 0 1px 8px rgba(138, 170, 122, 0.02);
 }
 
-/* Styled quote – light version */
 .styled-quote {
     background-color: rgba(248, 252, 246, 0.7);
     border-left: 0.5rem solid #8aaa7a;
@@ -154,7 +144,6 @@ blockquote, .blockquote {
     border-radius: 0 8px 8px 0;
 }
 
-/* Styled quote – dark version */
 .dark-styled-quote {
     background-color: rgba(72, 69, 60, 0.85);
     border-left: 0.5rem solid rgba(138, 170, 122, 0.6);
@@ -173,8 +162,6 @@ blockquote, .blockquote {
 
 /* ==========================================================================
    Content blocks
-   - .lightblock: light translucent card
-   - .darkblock: dark translucent card
    ========================================================================== */
 .lightblock {
     background-color: rgba(248, 252, 246, 0.6);
@@ -223,7 +210,6 @@ ul ul, ol ol, ul ol, ol ul {
 
 /* ==========================================================================
    Wiki content tables
-   - Rounded corners, subtle header background, hover row highlight
    ========================================================================== */
 table.wiki-content-table {
     border-collapse: collapse;
@@ -271,7 +257,6 @@ img {
     border-radius: 6px;
 }
 
-/* SCP-style image block with caption */
 .scp-image-block {
     border-radius: 8px;
     overflow: hidden;
@@ -325,7 +310,6 @@ hr {
 
 /* ==========================================================================
    Page action buttons
-   - Pill-shaped, translucent, with hover lift effect
    ========================================================================== */
 #edit-button,
 #pagerate-button,
@@ -388,7 +372,6 @@ hr {
     box-shadow: 0 2px 16px rgba(138, 170, 122, 0.05) !important;
 }
 
-/* Edit button – slightly stronger accent */
 #edit-button {
     background: rgba(138, 170, 122, 0.08) !important;
     border-color: rgba(138, 170, 122, 0.1) !important;
@@ -400,7 +383,6 @@ hr {
     color: #3a5a2a !important;
 }
 
-/* Delete button – subtle red tint on hover */
 #delete-button:hover {
     background: rgba(180, 120, 120, 0.08) !important;
     border-color: rgba(180, 120, 120, 0.2) !important;
@@ -530,35 +512,8 @@ hr {
     border: 0.6mm ridge rgba(86, 118, 70, 0.3) !important;
 }
 
-#login-status #account-options ul li a {
-    background: rgba(0, 0, 0, 0) !important;
-}
-
 #login-status #account-options ul {
     background: rgba(106, 138, 90, 0.4) !important;
-}
-
-#login-status #account-options {
-    background: rgba(106, 138, 90, 0.4) !important;
-    border: 0.6mm ridge rgba(86, 118, 70, 0.3, .5) !important;
-}
-
-#login-status #account-options ul li:hover {
-    background: rgba(106, 138, 90, 1) !important;
-}
-
-#login-status #account-options ul li a {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    -webkit-box-align: center;
-    color: white;
-    font-weight: bold !important;
-}
-
-#login-status #account-options ul {
     -webkit-box-flex: 1;
     flex-grow: 1;
     grid-template-columns: 1fr 1fr;
@@ -571,12 +526,33 @@ hr {
     display: grid;
 }
 
+#login-status #account-options {
+    background: rgba(106, 138, 90, 0.4) !important;
+    border: 0.6mm ridge rgba(86, 118, 70, 0.3, .5) !important;
+}
+
+#login-status #account-options ul li:hover {
+    background: rgba(106, 138, 90, 1) !important;
+}
+
+#login-status #account-options ul li a {
+    background: rgba(0, 0, 0, 0) !important;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    -webkit-box-align: center;
+    color: white;
+    font-weight: bold !important;
+}
+
 a#account-topbutton {
     border: 0 !important;
 }
 
 /* ==========================================================================
-   Open menu button (mobile)
+   Open menu button
    ========================================================================== */
 .open-menu {
     background-image: url("https://imgurl.diadi.cn/imgs/2026/09/bafa4b6865635de8.gif");
@@ -609,103 +585,9 @@ a#account-topbutton {
         transform: translateY(-1px) !important;
     }
 }
+
 /* ==========================================================================
    SD container (difficulty / class indicator)
-   - CSS variables for border, symbol, bullets, text colors
-   ========================================================================== */
-.sd-container {
-   --sd-border:59,59,59;
-}
- 
-.top-box {
-   border-color: rgb(59, 54, 59) !important;
-}
- 
-.bottom-box ul li {
-   color: rgb(59, 54, 59) !important;
-}
- 
-.bottom-box ul li:before {
-   background: rgb(59, 54, 59) !important;
-}
- 
-.top-box .gradient-box {
-  background: linear-gradient(90deg, rgba(59, 54, 59, 1) 0%, rgba(59, 54, 59, 0) 36%) !important;
-}
- 
-.header-diamond {
-   background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 300.9 284.5' style='enable-background:new 0 0 300.9 284.5;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%233b363b;%7D .st1%7Bfill:%233b363b;%7D%0A%3C/style%3E%3Cg%3E%3Cpolygon class='st1' points='73.4,32.6 0,105.4 13.6,105.4 86.4,32.6 '/%3E%3Cpolygon class='st1' points='26.5,105.4 40.1,105.4 112.9,32.6 99.3,32.6 '/%3E%3C/g%3E%3Cpolyline class='st1' points='287.3,105.4 214.5,32.6 227.5,32.6 287.3,91.9 '/%3E%3Cpolygon class='st1' points='274.4,105.4 260.8,105.4 188,32.6 201.6,32.6 '/%3E%3C/svg%3E") !important;
-}
- 
-.top-box.class-unknown .header-diamond { filter: none !important; }
-.top-box.class-unknown:before, .top-box.class-unknown .header-diamond .diamond-pattern{ opacity: 0.15 !important; }
- 
-.top-box .header-diamond .diamond-image {
-   filter: brightness(0%) invert(100%);
-}
-
-/* ==========================================================================
-   Header title and subtitle positioning
-   ========================================================================== */
-#header h1 {
-    width: 100%;
-}
-
-#header h1 a, #header h1 a:before {
-    width: fit-content;
-    transition: 0.2s;
-    position: relative;
-    bottom: 0;
-    color: rgb(var(--white-monochrome));
-}
-
-#header h1 a:hover:before {
-    text-shadow: 0px 5px 3px rgba(0,0,0,0.3);
-    bottom: 3px;
-}
-
-#header h1, #header h1 a {
-    position: absolute;
-    top: 1.4rem;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 0;
-    height: 1.5rem;
-}
-
-#header h2, #header h2 span, #header h2 span::before {
-    position: absolute;
-    top: 2.05rem;
-    margin: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-weight: bold;
-}
-
-#header h2 span::before {
-    color: rgb(var(--white-monochrome));
-}
-
-#header h1 a::before, #header h2 span::before {
-    text-shadow: 0px 2px 3px rgba(0,0,0,0.8);
-}
-
-/* ==========================================================================
-   Header background
-   - Gradient overlay + green wall pattern
-   ========================================================================== */
-#skrollr-body {
-    background-image: linear-gradient(to bottom, rgba(87, 116, 104, 0.2), #f5f8f3 162px), var(--green-wall-base) !important;
-    background-repeat: repeat;
-    background-size: 600px;
-    width: 100%;
-    height: 7.5rem;
-}
-
-/* ==========================================================================
-   SD container – full variable set
    ========================================================================== */
 .sd-container {
     --sd-border: 59, 59, 59;
@@ -757,13 +639,58 @@ a#account-topbutton {
 }
 
 /* ==========================================================================
+   Header title and subtitle positioning
+   ========================================================================== */
+#header h1 {
+    width: 100%;
+}
+
+#header h1 a, #header h1 a:before {
+    width: fit-content;
+    transition: 0.2s;
+    position: relative;
+    bottom: 0;
+    color: rgb(var(--white-monochrome));
+}
+
+#header h1 a:hover:before {
+    text-shadow: 0px 5px 3px rgba(0,0,0,0.3);
+    bottom: 3px;
+}
+
+#header h1, #header h1 a {
+    position: absolute;
+    top: 1.4rem;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 0;
+    height: 1.5rem;
+}
+
+#header h2, #header h2 span, #header h2 span::before {
+    position: absolute;
+    top: 2.05rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+#header h2 span::before {
+    color: rgb(var(--white-monochrome));
+}
+
+#header h1 a::before, #header h2 span::before {
+    text-shadow: 0px 2px 3px rgba(0,0,0,0.8);
+}
+
+/* ==========================================================================
    Difficulty class color mapping
-   - class-0 through class-5
-   - Special classes: unknown, habitable, deadzone, pending, n-a, amended, omega
-   - Chinese aliases included for each special class
    ========================================================================== */
 
-/* Class 0 – safe / light green */
+/* Class 0 */
 .top-box.class-0,
 .header-diamond .diamond-color.class-0 {
     background: rgb(184, 243, 208) !important;
@@ -793,13 +720,13 @@ a#account-topbutton {
     background: rgb(35, 91, 58) !important;
 }
 
-/* Class 5 – darkest green */
+/* Class 5 */
 .top-box.class-5,
 .header-diamond .diamond-color.class-5 {
     background: rgb(2, 48, 23) !important;
 }
 
-/* Unknown class */
+/* Unknown */
 .top-box.class-unknown,
 .header-diamond .diamond-color.class-unknown,
 .top-box.class-未知,
