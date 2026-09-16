@@ -593,21 +593,22 @@ a#account-topbutton {
 /* ==========================================================================
    Search box submit button
    ========================================================================== */
-#search-top-box-form > input[type=submit] {
-  padding: 8px 16px !important;
-  border-radius:10px !important;
-  border:1px solid rgba(138, 170, 122, 0.12) !important;
-  background: linear-gradient(135deg, rgba(138, 170, 122, 0.08), rgba(74, 122, 58, 0.04)) !important;
-  color:#4a6a3a !important;
-  cursor:pointer !important;
-  transition:0.2s ease !important;
-}
+@media only screen and (min-width: 768px) {
+    #search-top-box-form > input[type=submit] {
+        padding: 8px 16px !important;
+        border-radius:10px !important;
+        border:1px solid rgba(138, 170, 122, 0.12) !important;
+        background: linear-gradient(135deg, rgba(138, 170, 122, 0.08), rgba(74, 122, 58, 0.04)) !important;
+        color:#4a6a3a !important;
+        cursor:pointer !important;
+        transition:0.2s ease !important;
+    }
 
-#search-top-box-form > input[type=submit]:hover {
-  background: linear-gradient(135deg, rgba(138, 170, 122, 0.14), rgba(74, 122, 58, 0.07)) !important;
-  transform: translateY(-1px) !important;
+    #search-top-box-form > input[type=submit]:hover {
+        background: linear-gradient(135deg, rgba(138, 170, 122, 0.14), rgba(74, 122, 58, 0.07)) !important;
+        transform: translateY(-1px) !important;
+    }
 }
-
 /* ==========================================================================
    SD container (difficulty / class indicator)
    - CSS variables for border, symbol, bullets, text colors
