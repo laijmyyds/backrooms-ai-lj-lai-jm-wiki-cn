@@ -1,0 +1,343 @@
+/* ==========================================================================
+   SD container (difficulty / class indicator)
+   ========================================================================== */
+.sd-container {
+    --sd-border: 59, 59, 59;
+    --sd-border-secondary: 0, 0, 0;
+    --sd-border-deadzone: 30, 45, 30;
+    --sd-symbol: 59, 59, 59;
+    --sd-symbol-secondary: 255, 255, 255;
+    --sd-bullets: 59, 59, 59;
+    --sd-text: var(--swatch-text-secondary-color);
+}
+
+/* Top box border */
+.top-box {
+    border-color: rgb(59, 54, 59) !important;
+}
+
+/* Bottom box list items */
+.bottom-box ul li {
+    color: rgb(59, 54, 59) !important;
+}
+
+.bottom-box ul li:before {
+    background: rgb(59, 54, 59) !important;
+}
+
+/* Top box gradient */
+.top-box .gradient-box {
+    background: linear-gradient(90deg, rgba(59, 54, 59, 1) 0%, rgba(59, 54, 59, 0) 36%) !important;
+}
+
+/* Header diamond icon */
+.header-diamond {
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 300.9 284.5' style='enable-background:new 0 0 300.9 284.5;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:%233b363b;%7D .st1%7Bfill:%233b363b;%7D%0A%3C/style%3E%3Cg%3E%3Cpolygon class='st1' points='73.4,32.6 0,105.4 13.6,105.4 86.4,32.6 '/%3E%3Cpolygon class='st1' points='26.5,105.4 40.1,105.4 112.9,32.6 99.3,32.6 '/%3E%3C/g%3E%3Cpolyline class='st1' points='287.3,105.4 214.5,32.6 227.5,32.6 287.3,91.9 '/%3E%3Cpolygon class='st1' points='274.4,105.4 260.8,105.4 188,32.6 201.6,32.6 '/%3E%3C/svg%3E") !important;
+}
+
+/* Unknown class – no filter, reduced opacity */
+.top-box.class-unknown .header-diamond {
+    filter: none !important;
+}
+
+.top-box.class-unknown:before,
+.top-box.class-unknown .header-diamond .diamond-pattern {
+    opacity: 0.15 !important;
+}
+
+/* Diamond image – invert to white */
+.top-box .header-diamond .diamond-image {
+    filter: brightness(0%) invert(100%);
+}
+
+/* ==========================================================================
+   Header title and subtitle positioning
+   ========================================================================== */
+#header h1 {
+    width: 100%;
+}
+
+#header h1 a, #header h1 a:before {
+    width: fit-content;
+    transition: 0.2s;
+    position: relative;
+    bottom: 0;
+    color: rgb(var(--white-monochrome));
+}
+
+#header h1 a:hover:before {
+    text-shadow: 0px 5px 3px rgba(0,0,0,0.3);
+    bottom: 3px;
+}
+
+#header h1, #header h1 a {
+    position: absolute;
+    top: 1.4rem;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 0;
+    height: 1.5rem;
+}
+
+#header h2, #header h2 span, #header h2 span::before {
+    position: absolute;
+    top: 2.05rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+#header h2 span::before {
+    color: rgb(var(--white-monochrome));
+}
+
+#header h1 a::before, #header h2 span::before {
+    text-shadow: 0px 2px 3px rgba(0,0,0,0.8);
+}
+
+/* ==========================================================================
+   Difficulty class color mapping
+   ========================================================================== */
+
+/* Class 0 */
+.top-box.class-0,
+.header-diamond .diamond-color.class-0 {
+    background: rgb(184, 243, 208) !important;
+}
+
+/* Class 1 */
+.top-box.class-1,
+.header-diamond .diamond-color.class-1 {
+    background: rgb(126, 206, 159) !important;
+}
+
+/* Class 2 */
+.top-box.class-2,
+.header-diamond .diamond-color.class-2 {
+    background: rgb(61, 152, 99) !important;
+}
+
+/* Class 3 */
+.top-box.class-3,
+.header-diamond .diamond-color.class-3 {
+    background: rgb(46, 127, 80) !important;
+}
+
+/* Class 4 */
+.top-box.class-4,
+.header-diamond .diamond-color.class-4 {
+    background: rgb(35, 91, 58) !important;
+}
+
+/* Class 5 */
+.top-box.class-5,
+.header-diamond .diamond-color.class-5 {
+    background: rgb(2, 48, 23) !important;
+}
+
+/* Unknown */
+.top-box.class-unknown,
+.header-diamond .diamond-color.class-unknown,
+.top-box.class-未知,
+.header-diamond .diamond-color.class-未知 {
+    background: rgb(59, 64, 59) !important;
+}
+
+/* Habitable */
+.top-box.class-habitable,
+.header-diamond .diamond-color.class-habitable,
+.top-box.class-宜居,
+.header-diamond .diamond-color.class-宜居 {
+    background: rgb(214, 255, 231) !important;
+}
+
+/* Deadzone */
+.top-box.class-deadzone,
+.header-diamond .diamond-color.class-deadzone,
+.top-box.class-死区,
+.header-diamond .diamond-color.class-死区 {
+    background: rgb(30, 45, 30) !important;
+}
+
+/* Pending */
+.top-box.class-pending,
+.header-diamond .diamond-color.class-pending,
+.top-box.class-待定,
+.header-diamond .diamond-color.class-待定 {
+    background: rgb(180, 190, 178) !important;
+}
+
+/* N/A */
+.top-box.class-n-a,
+.header-diamond .diamond-color.class-n-a,
+.top-box.class-不适用,
+.header-diamond .diamond-color.class-不适用 {
+    background: rgb(40, 48, 40) !important;
+}
+
+/* Amended */
+.top-box.class-amended,
+.header-diamond .diamond-color.class-amended,
+.top-box.class-修正,
+.header-diamond .diamond-color.class-修正 {
+    background: rgb(150, 170, 145) !important;
+}
+
+/* Omega */
+.top-box.class-omega,
+.header-diamond .diamond-color.class-omega,
+.top-box.class-终焉,
+.header-diamond .diamond-color.class-终焉 {
+    background: rgb(30, 60, 50) !important;
+}
+
+/* ==========================================================================
+   IETS Box
+   ========================================================================== */
+
+:root {
+    /* Neutral frame */
+    --box-border: var(--gray-monochrome);
+    --box-shadow: var(--swatch-tertiary-color);
+
+    /* Class colour ramp */
+
+    /* Class 0 – Habitable / safe: pale sage */
+    --box-color-0: 138, 170, 122;
+
+    /* Class 1 – Mild: muted moss */
+    --box-color-1: 106, 138, 90;
+
+    /* Class 2 – Moderate: deeper olive-green */
+    --box-color-2: 90, 122, 74;
+
+    /* Class 3 – Unstable: forest green */
+    --box-color-3: 74, 106, 58;
+
+    /* Class 4 – Dangerous: dark pine */
+    --box-color-4: 58, 90, 53;
+
+    /* Class 5 – Deadzone / extreme: near-black green */
+    --box-color-5: 30, 60, 50;
+}
+
+/* --- Optional --- */
+.box {
+    /* was: rgb(var(--pale-gray-monochrome)) */
+    background: rgba(248, 252, 246, 0.6);
+}
+
+/* --- Hover accent --- */
+.box:hover {
+    /* was */
+    border-left-color: rgba(138, 170, 122, 0.6);
+    box-shadow:
+        inset 0 0 0 0.0625rem rgba(138, 170, 122, 0.25),
+        inset 0.0625rem 0 0 0 rgba(138, 170, 122, 0.25),
+        inset 0 -0.0625rem 0 0 rgba(138, 170, 122, 0.4);
+}
+
+/* ==========================================================================
+   CECS Box
+   ========================================================================== */
+
+:root {
+    /* Primary dark frame */
+    --cecs-dark: 58, 90, 53;
+
+    /* Secondary light surface */
+    --cecs-light: 240, 246, 236;
+
+    /* Accent stripes / hex marks */
+    --cecs-accent: 138, 170, 122;
+}
+
+/* --- Optional --- */
+.iets {
+    background: rgba(248, 252, 246, 0.9);
+}
+
+.text-box {
+    color: #f0f4ed;
+}
+
+/* --- Danger / class number colours --- */
+.iets-val.danger-0 { color: rgb(184, 243, 208); } /* was 27,122,44  */
+.iets-val.danger-1 { color: rgb(138, 170, 122); } /* was 88,248,70  */
+.iets-val.danger-2 { color: rgb(106, 138,  90); } /* was 211,186,0  */
+.iets-val.danger-3 { color: rgb( 90, 122,  74); } /* was 239,149,0  */
+.iets-val.danger-4 { color: rgb( 74, 106,  58); } /* was 254,110,24 */
+.iets-val.danger-5 { color: rgb( 30,  60,  50); } /* was 253,69,69  */
+
+/* ==========================================================================
+   PLAS Box
+   ========================================================================== */
+
+:root {
+    /* Dark frame */
+    --plas-dark: 58, 90, 53;
+
+    /* Light surface */
+    --plas-light: 240, 246, 236;
+
+    /* Accent side-bars */
+    --plas-accent: 138, 170, 122;
+}
+
+/* --- Level bar gradient --- */
+.level-1 .bar1 { background-color: rgb(184, 243, 208); }
+.level-2 .bar1, .level-2 .bar2 { background-color: rgb(138, 170, 122); }
+.level-3 .bar1, .level-3 .bar2, .level-3 .bar3 { background-color: rgb(106, 138,  90); }
+.level-4 .bar1, .level-4 .bar2, .level-4 .bar3, .level-4 .bar4 { background-color: rgb( 74, 106,  58); }
+.level-5 .bar1, .level-5 .bar2, .level-5 .bar3, .level-5 .bar4, .level-5 .bar5 { background-color: rgb( 46,  91,  58); }
+.level-6 .bar1, .level-6 .bar2, .level-6 .bar3, .level-6 .bar4, .level-6 .bar5, .level-6 .bar6{ background-color: rgb( 30,  60,  50); box-shadow: 0 0 5px rgba(138, 170, 122, 0.6); }
+
+/* ==========================================================================
+   Credit Rate widget – Literary Archive colour remap
+   Original file: github.backroomswiki.cn/credit/css/style.css
+   ========================================================================== */
+
+/* --- Main rate box frame (was warm maroon #633) --- */
+.rate-box-with-credit-button {
+    background-color: rgba(138, 170, 122, 0.85);
+    border-color: rgba(106, 138, 90, 0.9);
+    box-shadow: 1px 1px 3px rgba(74, 106, 58, 0.25);
+}
+
+/* --- Credit button divider (was #966) --- */
+.creditButton p a {
+    color: #f0f4ed;
+    border-left-color: rgba(106, 138, 90, 0.9);
+}
+
+/* --- Credit button hover (was #3498db blue) --- */
+.creditButton p a:hover {
+    color: #d6f0c0;
+}
+
+/* --- Standalone credit button (was maroon #744) --- */
+.creditButtonStandalone p a {
+    color: #f0f4ed;
+    background: rgba(138, 170, 122, 0.9);
+    box-shadow: 0 0 3px rgba(74, 106, 58, 0.35);
+}
+
+.creditButtonStandalone p a:hover {
+    background: rgba(90, 122, 74, 1);
+}
+
+/* --- Modal box surface (was pure white + warm border/shadow) --- */
+.modalbox {
+    background-color: #f8fcf6;
+    background: linear-gradient(#eef4ea 51px, #f8fcf6 51px, #f8fcf6);
+    border-color: rgba(138, 170, 122, 0.4);
+    box-shadow: 0 2px 6px rgba(74, 106, 58, 0.2);
+}
+
+/* --- Fader backdrop stays neutral dark; optional green tint --- */
+.fader {
+    background-color: rgba(30, 45, 30, 0.5);
+}
