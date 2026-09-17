@@ -146,19 +146,19 @@ blockquote, .blockquote {
 }
 
 .dark-styled-quote {
-    background-color: rgba(72, 69, 60, 0.85);
+    background-color: rgba(138, 170, 122, 0.85);
     border-left: 0.5rem solid rgba(138, 170, 122, 0.6);
-    color: #f0f4ed;
+    color: #e8f0e5;
     padding: 0.1rem 1rem;
     margin: 0.5rem 0 0.5rem 0.25rem;
     box-shadow: 0.05rem 0.1rem 0.3rem rgba(25, 20, 16, 0.25);
     border-radius: 0 8px 8px 0;
 }
 .dark-styled-quote a {
-    color: #8aaa7a;
+    color: #d3e6cb;
 }
 .dark-styled-quote a:hover {
-    color: #aac89a;
+    color: #b2d49f;
 }
 
 /* ==========================================================================
@@ -174,8 +174,8 @@ blockquote, .blockquote {
 }
 
 .darkblock {
-    background-color: rgba(72, 69, 60, 0.85);
-    color: #eee;
+    background-color: rgba(138, 170, 122, 0.85);
+    color: #e8f0e5;
     padding: 0.01rem 1rem;
     margin: 0.5rem 0 0.5rem 0.25rem;
     box-shadow: 0 0.2rem 0.3rem rgba(25, 20, 16, 0.2);
