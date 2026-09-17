@@ -341,3 +341,7 @@
 .fader {
     background-color: rgba(30, 45, 30, 0.5);
 }
+
+.top-box:not([class*="class-"]) {
+    background: rgb(59, 64, 59) !important;
+}
