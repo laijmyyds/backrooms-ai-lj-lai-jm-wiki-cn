@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>元素裂变</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at 20% 30%, #0b0f1c, #05070f 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 16px;
+    }
+    .game-container {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(12, 16, 26, 0.9);
+      backdrop-filter: blur(16px);
+      border-radius: 2rem;
+      padding: 1.2rem 1.6rem 1.4rem 1.6rem;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.9), inset 0 1px 3px rgba(160, 210, 255, 0.15);
+      border: 1px solid rgba(120, 180, 255, 0.3);
+    }
+    .arena {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .player-area {
+      flex: 1 1 380px;
+      background: #0a0f1acc;
+      border-radius: 1.5rem;
+      padding: 0.8rem 0.8rem 0.6rem 0.8rem;
+      box-shadow: inset 0 0 0 1px #1f2c44, 0 8px 18px #00000080;
+      backdrop-filter: blur(4px);
+    }
+    .enemy-area {
+      background: #130e1acc;
+      box-shadow: inset 0 0 0 1px #3f2f52, 0 8px 18px #00000080;
+    }
+    .area-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding: 0 4px;
+      font-weight: 500;
+      color: #b0c4e0;
+      letter-spacing: 1px;
+      font-size: 0.75rem;
+    }
+    .hp-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #05070c;
+      padding: 4px 12px;
+      border-radius: 40px;
+      border: 1px solid #2b3f5e;
+    }
+    .hp-fill {
+      width: 70px;
+      height: 7px;
+      background: #1a2438;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px black;
+    }
+    .hp-fill span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #4be08b, #22b86e);
+      border-radius: 8px;
+      transition: width 0.2s ease;
+    }
+    .hp-fill.enemy span {
+      background: linear-gradient(90deg, #ff5e7c, #d42a4a);
+    }
+    .hp-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #e0ecff;
+      min-width: 40px;
+    }
+    .status-icons {
+      display: flex;
+      gap: 4px;
+      font-size: 0.7rem;
+      margin-left: 8px;
+      color: #ffd966;
+    }
+    .hand {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      min-height: 118px;
+      align-items: center;
+      padding: 4px 0;
+    }
+    .card {
+      width: 88px;
+      height: 116px;
+      background: linear-gradient(145deg, #1a2538, #0d1422);
+      border-radius: 12px;
+      border: 2px solid #2e405e;
+      box-shadow: 0 7px 0 #05070c, 0 10px 16px #00000080;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 3px;
+      transition: all 0.1s ease;
+      cursor: pointer;
+      position: relative;
+      color: #d9e6ff;
+    }
+    .card.enemy-card {
+      border-color: #5e3e4e;
+      box-shadow: 0 7px 0 #0a070c, 0 10px 16px #00000080;
+      cursor: default;
+    }
+    .card.enemy-card:active {
+      transform: translateY(0);
+      box-shadow: 0 7px 0 #0a070c, 0 10px 16px #00000080;
+    }
+    .card:not(.enemy-card):active {
+      transform: translateY(5px);
+      box-shadow: 0 2px 0 #05070c, 0 7px 12px #00000080;
+    }
+    .card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      filter: grayscale(0.6);
+      transform: translateY(3px);
+      box-shadow: 0 4px 0 #05070c;
+    }
+    .card.upgraded {
+      border-color: #c9a84c;
+      box-shadow: 0 7px 0 #05070c, 0 10px 16px #00000080, 0 0 10px #ffd96680;
+    }
+    .card-icon {
+      font-size: 1.8rem;
+      filter: drop-shadow(0 0 6px currentColor);
+    }
+    .card-name {
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: #00000055;
+      padding: 2px 5px;
+      border-radius: 16px;
+      margin-top: 3px;
+      color: #eef3ff;
+    }
+    .card-cost {
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      background: #0e121f;
+      border: 2px solid #3f6ac0;
+      border-radius: 30px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #b8d0ff;
+    }
+    .card-desc {
+      font-size: 0.48rem;
+      text-align: center;
+      margin-top: 2px;
+      color: #a5b9d4;
+      line-height: 1.2;
+      padding: 0 2px;
+    }
+    .card-upgrade-badge {
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      background: #c9a84c;
+      color: #0a0e17;
+      font-size: 0.55rem;
+      font-weight: bold;
+      padding: 1px 5px;
+      border-radius: 16px;
+    }
+    .stats-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #080d17cc;
+      border-radius: 50px;
+      padding: 8px 20px;
+      margin-top: 8px;
+      border: 1px solid #23304a;
+      backdrop-filter: blur(4px);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .resource {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #b8d0ff;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .resource .energy-icon {
+      font-size: 1.5rem;
+    }
+    .relics-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e0d0a0;
+      font-size: 0.75rem;
+      background: #1a1e2e80;
+      padding: 3px 12px;
+      border-radius: 40px;
+      border: 1px solid #5a4a2a;
+    }
+    .relic-icon {
+      font-size: 1rem;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      background: #1b253b;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-weight: 600;
+      color: #d0e0ff;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 0 #0a0e17, 0 5px 12px black;
+      cursor: pointer;
+      transition: all 0.07s;
+      border: 1px solid #3d5277;
+      font-size: 0.8rem;
+    }
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #0a0e17, 0 5px 12px black;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #0a0e17;
+      pointer-events: none;
+      filter: grayscale(0.5);
+    }
+    .btn-primary {
+      background: #26447a;
+      border-color: #6b9aff;
+      box-shadow: 0 4px 0 #101b2e, 0 5px 12px black;
+    }
+    .log {
+      margin-top: 12px;
+      background: #050a12cc;
+      border-radius: 30px;
+      padding: 10px 16px;
+      font-size: 0.72rem;
+      color: #95a9c9;
+      min-height: 3rem;
+      border: 1px solid #1f2c44;
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      letter-spacing: 0.2px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .log span {
+      color: #b8d4ff;
+      font-weight: 600;
+    }
+    .buff-badge {
+      background: #3a2a1a;
+      border: 1px solid #c9a84c;
+      color: #ffd966;
+      border-radius: 20px;
+      padding: 1px 8px;
+      font-size: 0.65rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin: 0 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="arena">
+      <div class="player-area enemy-area" id="enemyArea">
+        <div class="area-title">
+          <span>虚空造物</span>
+          <div style="display: flex; align-items: center;">
+            <div class="status-icons" id="enemyStatusIcons"></div>
+            <div class="hp-bar">
+              <div class="hp-fill enemy" id="enemyHpFill"><span style="width:100%"></span></div>
+              <span class="hp-text" id="enemyHpText">45/45</span>
+            </div>
+          </div>
+        </div>
+        <div class="hand" id="enemyHand"></div>
+      </div>
+    </div>
+
+    <div class="player-area" id="playerArea">
+      <div class="area-title">
+        <span>你的手牌</span>
+        <div style="display: flex; align-items: center;">
+          <div class="status-icons" id="playerStatusIcons"></div>
+          <div class="hp-bar">
+            <div class="hp-fill" id="playerHpFill"><span style="width:100%"></span></div>
+            <span class="hp-text" id="playerHpText">45/45</span>
+          </div>
+        </div>
+      </div>
+      <div class="hand" id="playerHand"></div>
+    </div>
+
+    <div class="stats-panel">
+      <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+        <div class="resource">
+          <span class="energy-icon">⚡</span>
+          <span id="energyDisplay">3 / 6</span>
+        </div>
+        <div class="relics-display" id="relicsDisplay">
+          <span>遗物:</span>
+          <span id="relicList">无</span>
+        </div>
+      </div>
+      <div class="button-group">
+        <button class="btn" id="endTurnBtn">结束回合</button>
+        <button class="btn btn-primary" id="restartBtn">重开</button>
+      </div>
+    </div>
+
+    <div class="log" id="logMessage">
+      <span>点击卡牌使用，结束回合后敌人行动</span>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const CARD_TEMPLATES = [
+        { id: 'strike', name: '打击', cost: 1, icon: '⚔️', desc: '造成6点伤害', type: 'attack', value: 6, upgrade: { desc: '造成9点伤害', value: 9 } },
+        { id: 'heavy', name: '重击', cost: 2, icon: '💥', desc: '造成11点伤害', type: 'attack', value: 11, upgrade: { desc: '造成15点伤害', value: 15 } },
+        { id: 'quick', name: '快斩', cost: 0, icon: '🗡️', desc: '造成3点伤害', type: 'attack', value: 3, upgrade: { desc: '造成5点伤害', value: 5 } },
+        { id: 'cleave', name: '顺劈', cost: 2, icon: '🪓', desc: '造成8点伤害', type: 'attack', value: 8, upgrade: { desc: '造成12点伤害', value: 12 } },
+        { id: 'pierce', name: '穿刺', cost: 1, icon: '🏹', desc: '造成5点伤害，无视护盾', type: 'attack', value: 5, ignoreShield: true, upgrade: { desc: '造成8点伤害，无视护盾', value: 8 } },
+        { id: 'execute', name: '处决', cost: 3, icon: '⚰️', desc: '造成16点伤害', type: 'attack', value: 16, upgrade: { desc: '造成22点伤害', value: 22 } },
+        { id: 'flurry', name: '连击', cost: 2, icon: '🌪️', desc: '造成4点伤害，抽一张牌', type: 'attack_draw', value: 4, draw: 1, upgrade: { desc: '造成7点伤害，抽一张牌', value: 7 } },
+        { id: 'heal', name: '愈合', cost: 1, icon: '✨', desc: '恢复7点生命', type: 'heal', value: 7, upgrade: { desc: '恢复10点生命', value: 10 } },
+        { id: 'greaterHeal', name: '大治疗', cost: 2, icon: '💚', desc: '恢复12点生命', type: 'heal', value: 12, upgrade: { desc: '恢复17点生命', value: 17 } },
+        { id: 'regen', name: '再生', cost: 1, icon: '🌿', desc: '恢复4点生命，抽一张牌', type: 'heal_draw', value: 4, draw: 1, upgrade: { desc: '恢复7点生命，抽一张牌', value: 7 } },
+        { id: 'shield', name: '护盾', cost: 1, icon: '🛡️', desc: '获得5点护盾', type: 'shield', value: 5, upgrade: { desc: '获得8点护盾', value: 8 } },
+        { id: 'fortify', name: '强化', cost: 2, icon: '🏰', desc: '获得10点护盾', type: 'shield', value: 10, upgrade: { desc: '获得15点护盾', value: 15 } },
+        { id: 'barrier', name: '屏障', cost: 1, icon: '🔰', desc: '获得3点护盾，抽一张牌', type: 'shield_draw', value: 3, draw: 1, upgrade: { desc: '获得6点护盾，抽一张牌', value: 6 } },
+        { id: 'aegis', name: '神盾', cost: 3, icon: '⚜️', desc: '获得15点护盾', type: 'shield', value: 15, upgrade: { desc: '获得22点护盾', value: 22 } },
+        { id: 'surge', name: '涌动', cost: 0, icon: '🌀', desc: '获得2能量', type: 'energy', value: 2, upgrade: { desc: '获得3能量', value: 3 } },
+        { id: 'meditate', name: '冥想', cost: 0, icon: '🧘', desc: '获得1能量，抽一张牌', type: 'energy_draw', value: 1, draw: 1, upgrade: { desc: '获得2能量，抽一张牌', value: 2 } },
+        { id: 'insight', name: '洞察', cost: 1, icon: '👁️', desc: '抽两张牌', type: 'draw', draw: 2, upgrade: { desc: '抽三张牌', draw: 3 } },
+        { id: 'foresight', name: '预见', cost: 0, icon: '🔮', desc: '抽一张牌', type: 'draw', draw: 1, upgrade: { desc: '抽两张牌', draw: 2 } },
+        { id: 'drain', name: '汲取', cost: 2, icon: '🩸', desc: '造成5伤害，回复4生命', type: 'drain', value: 5, heal: 4, upgrade: { desc: '造成8伤害，回复6生命', value: 8, heal: 6 } },
+        { id: 'vampire', name: '吸血鬼', cost: 3, icon: '🧛', desc: '造成9伤害，回复6生命', type: 'drain', value: 9, heal: 6, upgrade: { desc: '造成13伤害，回复9生命', value: 13, heal: 9 } },
+        { id: 'soulEater', name: '噬魂', cost: 2, icon: '👻', desc: '造成7伤害，回复7生命', type: 'drain', value: 7, heal: 7, upgrade: { desc: '造成10伤害，回复10生命', value: 10, heal: 10 } },
+        { id: 'smite', name: '制裁', cost: 2, icon: '⚡', desc: '造成7伤害，获得2能量', type: 'attack_energy', value: 7, energy: 2, upgrade: { desc: '造成10伤害，获得3能量', value: 10, energy: 3 } },
+        { id: 'lifeSteal', name: '生命虹吸', cost: 3, icon: '💜', desc: '造成8伤害，回复8生命', type: 'drain', value: 8, heal: 8, upgrade: { desc: '造成12伤害，回复12生命', value: 12, heal: 12 } },
+        { id: 'doubleStrike', name: '双重打击', cost: 2, icon: '⚔️⚔️', desc: '造成4伤害，抽一张牌', type: 'attack_draw', value: 4, draw: 1, upgrade: { desc: '造成7伤害，抽两张牌', value: 7, draw: 2 } },
+        { id: 'poison', name: '毒刃', cost: 1, icon: '🧪', desc: '造成3伤害，施加3层中毒', type: 'attack_poison', value: 3, poison: 3, upgrade: { desc: '造成5伤害，施加5层中毒', value: 5, poison: 5 } },
+        { id: 'weakness', name: '虚弱诅咒', cost: 1, icon: '🌫️', desc: '施加2层虚弱', type: 'debuff_weak', weak: 2, upgrade: { desc: '施加3层虚弱', weak: 3 } },
+        { id: 'vulnerable', name: '破甲', cost: 1, icon: '🔨', desc: '施加2层易伤', type: 'debuff_vuln', vuln: 2, upgrade: { desc: '施加3层易伤', vuln: 3 } },
+        { id: 'regenBuff', name: '生命之种', cost: 1, icon: '🌱', desc: '获得3层再生', type: 'buff_regen', regen: 3, upgrade: { desc: '获得5层再生', regen: 5 } },
+        { id: 'strength', name: '力量增幅', cost: 1, icon: '💪', desc: '获得2点力量', type: 'buff_strength', strength: 2, upgrade: { desc: '获得3点力量', strength: 3 } },
+        { id: 'meteor', name: '陨石', cost: 4, icon: '☄️', desc: '造成20点伤害', type: 'attack', value: 20, upgrade: { desc: '造成28点伤害', value: 28 } },
+        { id: 'apocalypse', name: '天启', cost: 5, icon: '🔥', desc: '造成25点伤害', type: 'attack', value: 25, upgrade: { desc: '造成35点伤害', value: 35 } },
+        { id: 'divine', name: '神圣干预', cost: 4, icon: '🌟', desc: '恢复20生命，获得10护盾', type: 'heal_shield', value: 20, shield: 10, upgrade: { desc: '恢复28生命，获得15护盾', value: 28, shield: 15 } },
+        { id: 'void', name: '虚空', cost: 2, icon: '🌑', desc: '造成9点伤害', type: 'attack', value: 9, enemyOnly: true },
+        { id: 'corrupt', name: '腐化', cost: 1, icon: '☠️', desc: '造成4伤害，回复3生命', type: 'drain', value: 4, heal: 3, enemyOnly: true },
+        { id: 'annihilate', name: '湮灭', cost: 3, icon: '🌀', desc: '造成14点伤害', type: 'attack', value: 14, enemyOnly: true },
+        { id: 'darkPact', name: '黑暗契约', cost: 2, icon: '📜', desc: '造成6伤害，抽一张牌', type: 'attack_draw', value: 6, draw: 1, enemyOnly: true },
+        { id: 'voidShield', name: '虚空护盾', cost: 1, icon: '🛡️', desc: '获得6点护盾', type: 'shield', value: 6, enemyOnly: true },
+        { id: 'soulBurn', name: '灵魂燃烧', cost: 2, icon: '🔥', desc: '造成5伤害，获得2能量', type: 'attack_energy', value: 5, energy: 2, enemyOnly: true },
+        { id: 'enemyPoison', name: '瘟疫', cost: 1, icon: '🦠', desc: '造成2伤害，施加3层中毒', type: 'attack_poison', value: 2, poison: 3, enemyOnly: true },
+      ];
+
+      const RELICS = [
+        { id: 'energyCore', name: '能量核心', icon: '🔋', desc: '每回合额外1能量', effect: 'energyCore' },
+        { id: 'thornMail', name: '荆棘之甲', icon: '🌵', desc: '受击反弹3伤害', effect: 'thornMail' },
+        { id: 'lifesteal', name: '吸血符文', icon: '🩸', desc: '造成伤害回复1生命', effect: 'lifesteal' },
+        { id: 'goldenIdol', name: '黄金雕像', icon: '🏆', desc: '开局手牌+1', effect: 'goldenIdol' },
+        { id: 'luckyClover', name: '幸运四叶草', icon: '🍀', desc: '抽牌20%额外抽一张', effect: 'luckyClover' },
+        { id: 'warriorBelt', name: '战士腰带', icon: '🥋', desc: '攻击伤害+2', effect: 'warriorBelt' },
+        { id: 'arcaneRing', name: '奥术指环', icon: '💍', desc: '每打出3张牌抽一张', effect: 'arcaneRing' },
+      ];
+
+      let game = {
+        player: { hp: 45, maxHp: 45, energy: 3, maxEnergy: 6, hand: [], relics: [] },
+        enemy: { hp: 45, maxHp: 45, energy: 0, maxEnergy: 3, hand: [] },
+        turn: 'player',
+        gameOver: false,
+        log: '点击卡牌使用，结束回合后敌人行动',
+        cardsPlayedThisTurn: 0,
+      };
+
+      let playerShield = 0;
+      let enemyShield = 0;
+      let playerPoison = 0;
+      let enemyPoison = 0;
+      let playerWeak = 0;
+      let enemyWeak = 0;
+      let playerVuln = 0;
+      let enemyVuln = 0;
+      let playerRegen = 0;
+      let enemyRegen = 0;
+      let playerStrength = 0;
+      let enemyStrength = 0;
+
+      const playerHandEl = document.getElementById('playerHand');
+      const enemyHandEl = document.getElementById('enemyHand');
+      const playerHpFill = document.querySelector('#playerHpFill span');
+      const playerHpText = document.getElementById('playerHpText');
+      const enemyHpFill = document.querySelector('#enemyHpFill span');
+      const enemyHpText = document.getElementById('enemyHpText');
+      const energyDisplay = document.getElementById('energyDisplay');
+      const logMessage = document.getElementById('logMessage');
+      const endTurnBtn = document.getElementById('endTurnBtn');
+      const restartBtn = document.getElementById('restartBtn');
+      const playerStatusIcons = document.getElementById('playerStatusIcons');
+      const enemyStatusIcons = document.getElementById('enemyStatusIcons');
+      const relicList = document.getElementById('relicList');
+
+      function log(msg) {
+        game.log = msg;
+        logMessage.innerHTML = msg;
+      }
+
+      function rand(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      function createCardFromTemplate(template, forceUpgraded = false) {
+        const base = {
+          ...template,
+          uid: Math.random().toString(36).substr(2, 9) + Date.now() + Math.random(),
+          upgraded: forceUpgraded || Math.random() < 0.15,
+        };
+        if (base.upgraded && template.upgrade) {
+          base.desc = template.upgrade.desc || base.desc;
+          base.value = template.upgrade.value !== undefined ? template.upgrade.value : base.value;
+          base.heal = template.upgrade.heal !== undefined ? template.upgrade.heal : base.heal;
+          base.draw = template.upgrade.draw !== undefined ? template.upgrade.draw : base.draw;
+          base.shield = template.upgrade.shield !== undefined ? template.upgrade.shield : base.shield;
+          base.energy = template.upgrade.energy !== undefined ? template.upgrade.energy : base.energy;
+          base.poison = template.upgrade.poison !== undefined ? template.upgrade.poison : base.poison;
+          base.weak = template.upgrade.weak !== undefined ? template.upgrade.weak : base.weak;
+          base.vuln = template.upgrade.vuln !== undefined ? template.upgrade.vuln : base.vuln;
+          base.regen = template.upgrade.regen !== undefined ? template.upgrade.regen : base.regen;
+          base.strength = template.upgrade.strength !== undefined ? template.upgrade.strength : base.strength;
+        }
+        return base;
+      }
+
+      function getRandomCard(forPlayer = true) {
+        const available = CARD_TEMPLATES.filter(t => forPlayer ? !t.enemyOnly : !t.playerOnly);
+        const template = available[rand(0, available.length - 1)];
+        return createCardFromTemplate(template, false);
+      }
+
+      function initHands() {
+        game.player.hand = [];
+        for (let i = 0; i < 5; i++) {
+          game.player.hand.push(getRandomCard(true));
+        }
+        if (game.player.relics.some(r => r.effect === 'goldenIdol')) {
+          game.player.hand.push(getRandomCard(true));
+        }
+        game.enemy.hand = [];
+        for (let i = 0; i < 4; i++) {
+          game.enemy.hand.push(getRandomCard(false));
+        }
+      }
+
+      function grantRandomRelic() {
+        const available = RELICS.filter(r => !game.player.relics.some(pr => pr.id === r.id));
+        if (available.length === 0) return;
+        const relic = available[rand(0, available.length - 1)];
+        game.player.relics.push(relic);
+        log(`获得遗物 [${relic.name}]：${relic.desc}`);
+        if (relic.effect === 'energyCore') {
+          game.player.maxEnergy += 1;
+        }
+      }
+
+      function resetGame() {
+        game = {
+          player: { hp: 45, maxHp: 45, energy: 3, maxEnergy: 6, hand: [], relics: [] },
+          enemy: { hp: 45, maxHp: 45, energy: 0, maxEnergy: 3, hand: [] },
+          turn: 'player',
+          gameOver: false,
+          log: '点击卡牌使用，结束回合后敌人行动',
+          cardsPlayedThisTurn: 0,
+        };
+        playerShield = 0; enemyShield = 0;
+        playerPoison = 0; enemyPoison = 0;
+        playerWeak = 0; enemyWeak = 0;
+        playerVuln = 0; enemyVuln = 0;
+        playerRegen = 0; enemyRegen = 0;
+        playerStrength = 0; enemyStrength = 0;
+
+        grantRandomRelic();
+        initHands();
+        game.player.energy = 3;
+        renderAll();
+        log('游戏开始，你的回合');
+      }
+
+      function calcDamage(base, attackerIsPlayer, defenderIsEnemy) {
+        let dmg = base;
+        if (attackerIsPlayer) dmg += playerStrength;
+        else dmg += enemyStrength;
+
+        if (attackerIsPlayer && playerWeak > 0) dmg = Math.floor(dmg * 0.75);
+        if (!attackerIsPlayer && enemyWeak > 0) dmg = Math.floor(dmg * 0.75);
+
+        if (defenderIsEnemy && enemyVuln > 0) dmg = Math.floor(dmg * 1.25);
+        if (!defenderIsEnemy && playerVuln > 0) dmg = Math.floor(dmg * 1.25);
+
+        return Math.max(1, dmg);
+      }
+
+      function applyDamageToEnemy(amount, sourceDesc = '', ignoreShield = false) {
+        if (game.gameOver) return;
+        let dmg = amount;
+        if (!ignoreShield && enemyShield > 0) {
+          const absorbed = Math.min(enemyShield, dmg);
+          enemyShield -= absorbed;
+          dmg -= absorbed;
+          log(`敌方护盾抵挡${absorbed}点伤害`);
+        }
+        if (dmg > 0) {
+          game.enemy.hp = Math.max(0, game.enemy.hp - dmg);
+          log(`对敌方造成${dmg}点伤害 ${sourceDesc}`);
+          if (game.player.relics.some(r => r.effect === 'lifesteal')) {
+            healPlayer(1, true);
+          }
+        }
+        if (game.enemy.hp <= 0) {
+          game.enemy.hp = 0;
+          game.gameOver = true;
+          game.turn = 'gameover';
+          log('你击败了虚空造物，胜利');
+        }
+        renderAll();
+      }
+
+      function applyDamageToPlayer(amount, sourceDesc = '', ignoreShield = false) {
+        if (game.gameOver) return;
+        let dmg = amount;
+        if (!ignoreShield && playerShield > 0) {
+          const absorbed = Math.min(playerShield, dmg);
+          playerShield -= absorbed;
+          dmg -= absorbed;
+          log(`你的护盾抵挡${absorbed}点伤害`);
+        }
+        if (dmg > 0) {
+          game.player.hp = Math.max(0, game.player.hp - dmg);
+          log(`你受到${dmg}点伤害 ${sourceDesc}`);
+          if (game.player.relics.some(r => r.effect === 'thornMail')) {
+            const reflectDmg = 3;
+            game.enemy.hp = Math.max(0, game.enemy.hp - reflectDmg);
+            log(`荆棘之甲反弹${reflectDmg}点伤害`);
+            if (game.enemy.hp <= 0) {
+              game.enemy.hp = 0;
+              game.gameOver = true;
+              game.turn = 'gameover';
+              log('你击败了虚空造物，胜利');
+            }
+          }
+        }
+        if (game.player.hp <= 0) {
+          game.player.hp = 0;
+          game.gameOver = true;
+          game.turn = 'gameover';
+          log('你被击败了，游戏结束');
+        }
+        renderAll();
+      }
+
+      function healPlayer(amount, silent = false) {
+        if (game.gameOver) return;
+        const healed = Math.min(amount, game.player.maxHp - game.player.hp);
+        if (healed > 0) {
+          game.player.hp += healed;
+          if (!silent) log(`回复${healed}点生命`);
+        }
+        renderAll();
+      }
+
+      function healEnemy(amount, silent = false) {
+        if (game.gameOver) return;
+        const healed = Math.min(amount, game.enemy.maxHp - game.enemy.hp);
+        if (healed > 0) {
+          game.enemy.hp += healed;
+          if (!silent) log(`敌方回复${healed}点生命`);
+        }
+        renderAll();
+      }
+
+      function addPlayerShield(amount) {
+        playerShield += amount;
+        log(`获得${amount}点护盾 (当前${playerShield})`);
+        renderAll();
+      }
+
+      function addEnemyShield(amount) {
+        enemyShield += amount;
+        log(`敌方获得${amount}点护盾 (当前${enemyShield})`);
+        renderAll();
+      }
+
+      function applyPoisonToEnemy(amount) {
+        enemyPoison += amount;
+        log(`敌方获得${amount}层中毒`);
+      }
+
+      function applyPoisonToPlayer(amount) {
+        playerPoison += amount;
+        log(`你获得${amount}层中毒`);
+      }
+
+      function drawPlayerCards(count) {
+        for (let i = 0; i < count; i++) {
+          let extra = 0;
+          if (game.player.relics.some(r => r.effect === 'luckyClover') && Math.random() < 0.2) {
+            extra = 1;
+          }
+          const newCard = getRandomCard(true);
+          game.player.hand.push(newCard);
+          log(`抽到 [${newCard.name}]${extra ? ' 幸运触发再抽一张' : ''}`);
+          if (extra) {
+            const extraCard = getRandomCard(true);
+            game.player.hand.push(extraCard);
+            log(`额外抽到 [${extraCard.name}]`);
+          }
+        }
+        renderAll();
+      }
+
+      function drawEnemyCards(count) {
+        for (let i = 0; i < count; i++) {
+          const newCard = getRandomCard(false);
+          game.enemy.hand.push(newCard);
+        }
+        renderAll();
+      }
+
+      function playPlayerCard(cardUid) {
+        if (game.turn !== 'player' || game.gameOver) return;
+        const cardIndex = game.player.hand.findIndex(c => c.uid === cardUid);
+        if (cardIndex === -1) return;
+        const card = game.player.hand[cardIndex];
+
+        if (game.player.energy < card.cost) {
+          log(`能量不足，需要${card.cost}点`);
+          renderAll();
+          return;
+        }
+
+        game.player.energy -= card.cost;
+        game.player.hand.splice(cardIndex, 1);
+        game.cardsPlayedThisTurn++;
+
+        log(`使用 [${card.name}]${card.upgraded ? ' 已升级' : ''}`);
+
+        let bonusDmg = 0;
+        if (game.player.relics.some(r => r.effect === 'warriorBelt')) {
+          bonusDmg = 2;
+        }
+
+        switch (card.type) {
+          case 'attack': {
+            const baseDmg = (card.value || 0) + bonusDmg;
+            const finalDmg = calcDamage(baseDmg, true, true);
+            applyDamageToEnemy(finalDmg, `来自${card.name}`, card.ignoreShield);
+            break;
+          }
+          case 'heal':
+            healPlayer(card.value);
+            break;
+          case 'shield':
+            addPlayerShield(card.value);
+            break;
+          case 'energy':
+            game.player.energy = Math.min(game.player.maxEnergy, game.player.energy + card.value);
+            log(`获得${card.value}点能量`);
+            renderAll();
+            break;
+          case 'draw':
+            drawPlayerCards(card.draw || 1);
+            break;
+          case 'drain': {
+            const baseDmg = (card.value || 0) + bonusDmg;
+            const finalDmg = calcDamage(baseDmg, true, true);
+            applyDamageToEnemy(finalDmg, `来自${card.name}`, false);
+            healPlayer(card.heal || 0);
+            break;
+          }
+          case 'attack_draw': {
+            const baseDmg = (card.value || 0) + bonusDmg;
+            const finalDmg = calcDamage(baseDmg, true, true);
+            applyDamageToEnemy(finalDmg, `来自${card.name}`, false);
+            drawPlayerCards(card.draw || 1);
+            break;
+          }
+          case 'heal_draw':
+            healPlayer(card.value);
+            drawPlayerCards(card.draw || 1);
+            break;
+          case 'shield_draw':
+            addPlayerShield(card.value);
+            drawPlayerCards(card.draw || 1);
+            break;
+          case 'energy_draw':
+            game.player.energy = Math.min(game.player.maxEnergy, game.player.energy + (card.value || 1));
+            log(`获得${card.value || 1}点能量`);
+            drawPlayerCards(card.draw || 1);
+            break;
+          case 'attack_energy': {
+            const baseDmg = (card.value || 0) + bonusDmg;
+            const finalDmg = calcDamage(baseDmg, true, true);
+            applyDamageToEnemy(finalDmg, `来自${card.name}`, false);
+            game.player.energy = Math.min(game.player.maxEnergy, game.player.energy + (card.energy || 1));
+            log(`获得${card.energy || 1}点能量`);
+            renderAll();
+            break;
+          }
+          case 'heal_shield':
+            healPlayer(card.value);
+            addPlayerShield(card.shield || 0);
+            break;
+          case 'attack_poison': {
+            const baseDmg = (card.value || 0) + bonusDmg;
+            const finalDmg = calcDamage(baseDmg, true, true);
+            applyDamageToEnemy(finalDmg, `来自${card.name}`, false);
+            applyPoisonToEnemy(card.poison || 0);
+            renderAll();
+            break;
+          }
+          case 'debuff_weak':
+            enemyWeak += card.weak || 0;
+            log(`敌方获得${card.weak || 0}层虚弱`);
+            renderAll();
+            break;
+          case 'debuff_vuln':
+            enemyVuln += card.vuln || 0;
+            log(`敌方获得${card.vuln || 0}层易伤`);
+            renderAll();
+            break;
+          case 'buff_regen':
+            playerRegen += card.regen || 0;
+            log(`你获得${card.regen || 0}层再生`);
+            renderAll();
+            break;
+          case 'buff_strength':
+            playerStrength += card.strength || 0;
+            log(`你获得${card.strength || 0}点力量`);
+            renderAll();
+            break;
+          default:
+            break;
+        }
+
+        if (game.player.relics.some(r => r.effect === 'arcaneRing') && game.cardsPlayedThisTurn % 3 === 0) {
+          drawPlayerCards(1);
+          log('奥术指环触发抽一张牌');
+        }
+
+        if (Math.random() < 0.2 && !game.gameOver && game.player.hand.length < 8) {
+          const newCard = getRandomCard(true);
+          game.player.hand.push(newCard);
+          log(`额外抽到 [${newCard.name}]`);
+        }
+
+        if (game.cardsPlayedThisTurn > 0 && game.cardsPlayedThisTurn % 5 === 0 && game.player.relics.length < 5) {
+          grantRandomRelic();
+        }
+
+        renderAll();
+      }
+
+      function enemyTurn() {
+        if (game.gameOver) return;
+
+        game.enemy.energy = game.enemy.maxEnergy;
+        if (game.enemy.hand.length < 5) {
+          drawEnemyCards(1);
+        }
+        log('敌方回合开始');
+
+        if (enemyPoison > 0) {
+          const poisonDmg = enemyPoison;
+          game.enemy.hp = Math.max(0, game.enemy.hp - poisonDmg);
+          log(`敌方受到${poisonDmg}点中毒伤害`);
+          enemyPoison = Math.max(0, enemyPoison - 1);
+          if (game.enemy.hp <= 0) {
+            game.enemy.hp = 0;
+            game.gameOver = true;
+            game.turn = 'gameover';
+            log('你击败了虚空造物，胜利');
+            renderAll();
+            return;
+          }
+        }
+
+        if (enemyRegen > 0) {
+          const healAmt = Math.min(enemyRegen, game.enemy.maxHp - game.enemy.hp);
+          game.enemy.hp += healAmt;
+          log(`敌方再生回复${healAmt}点生命`);
+          enemyRegen = Math.max(0, enemyRegen - 1);
+        }
+
+        let actions = 0;
+        const maxActions = 8;
+
+        while (game.enemy.energy > 0 && game.enemy.hand.length > 0 && !game.gameOver && actions < maxActions) {
+          const playableIndices = game.enemy.hand
+            .map((card, idx) => (card.cost <= game.enemy.energy ? idx : -1))
+            .filter(idx => idx !== -1);
+
+          if (playableIndices.length === 0) break;
+
+          let chosenIndex = playableIndices[0];
+          const enemyHpPercent = game.enemy.hp / game.enemy.maxHp;
+
+          const healCardIdx = playableIndices.find(idx => {
+            const c = game.enemy.hand[idx];
+            return c.type === 'heal' || c.type === 'drain' || c.type === 'heal_draw' || c.type === 'heal_shield';
+          });
+
+          const highDmgIdx = playableIndices.reduce((best, idx) => {
+            const c = game.enemy.hand[idx];
+            if (['attack', 'attack_draw', 'attack_energy', 'drain', 'attack_poison'].includes(c.type)) {
+              const val = c.value || 0;
+              if (best === -1) return idx;
+              const bestVal = game.enemy.hand[best].value || 0;
+              return val > bestVal ? idx : best;
+            }
+            return best;
+          }, -1);
+
+          const shieldCardIdx = playableIndices.find(idx => {
+            const c = game.enemy.hand[idx];
+            return c.type === 'shield' || c.type === 'shield_draw' || c.type === 'heal_shield';
+          });
+
+          if (enemyHpPercent < 0.35 && healCardIdx !== undefined) {
+            chosenIndex = healCardIdx;
+          } else if (enemyHpPercent < 0.5 && shieldCardIdx !== undefined && Math.random() < 0.6) {
+            chosenIndex = shieldCardIdx;
+          } else if (highDmgIdx !== -1) {
+            chosenIndex = highDmgIdx;
+          } else {
+            chosenIndex = playableIndices[rand(0, playableIndices.length - 1)];
+          }
+
+          const card = game.enemy.hand[chosenIndex];
+          game.enemy.energy -= card.cost;
+          game.enemy.hand.splice(chosenIndex, 1);
+
+          log(`敌方使用 [${card.name}]`);
+
+          switch (card.type) {
+            case 'attack': {
+              const baseDmg = (card.value || 0);
+              const finalDmg = calcDamage(baseDmg, false, false);
+              applyDamageToPlayer(finalDmg, `来自${card.name}`, card.ignoreShield);
+              break;
+            }
+            case 'heal':
+              healEnemy(card.value);
+              break;
+            case 'shield':
+              addEnemyShield(card.value);
+              break;
+            case 'energy':
+              game.enemy.energy = Math.min(game.enemy.maxEnergy, game.enemy.energy + card.value);
+              log(`敌方获得${card.value}点能量`);
+              break;
+            case 'draw':
+              drawEnemyCards(card.draw || 1);
+              break;
+            case 'drain': {
+              const baseDmg = (card.value || 0);
+              const finalDmg = calcDamage(baseDmg, false, false);
+              applyDamageToPlayer(finalDmg, `来自${card.name}`, false);
+              healEnemy(card.heal || 0);
+              break;
+            }
+            case 'attack_draw': {
+              const baseDmg = (card.value || 0);
+              const finalDmg = calcDamage(baseDmg, false, false);
+              applyDamageToPlayer(finalDmg, `来自${card.name}`, false);
+              drawEnemyCards(card.draw || 1);
+              break;
+            }
+            case 'heal_draw':
+              healEnemy(card.value);
+              drawEnemyCards(card.draw || 1);
+              break;
+            case 'shield_draw':
+              addEnemyShield(card.value);
+              drawEnemyCards(card.draw || 1);
+              break;
+            case 'energy_draw':
+              game.enemy.energy = Math.min(game.enemy.maxEnergy, game.enemy.energy + (card.value || 1));
+              drawEnemyCards(card.draw || 1);
+              break;
+            case 'attack_energy': {
+              const baseDmg = (card.value || 0);
+              const finalDmg = calcDamage(baseDmg, false, false);
+              applyDamageToPlayer(finalDmg, `来自${card.name}`, false);
+              game.enemy.energy = Math.min(game.enemy.maxEnergy, game.enemy.energy + (card.energy || 1));
+              break;
+            }
+            case 'heal_shield':
+              healEnemy(card.value);
+              addEnemyShield(card.shield || 0);
+              break;
+            case 'attack_poison': {
+              const baseDmg = (card.value || 0);
+              const finalDmg = calcDamage(baseDmg, false, false);
+              applyDamageToPlayer(finalDmg, `来自${card.name}`, false);
+              applyPoisonToPlayer(card.poison || 0);
+              renderAll();
+              break;
+            }
+            default:
+              break;
+          }
+          actions++;
+          renderAll();
+          if (game.gameOver) break;
+        }
+
+        if (playerPoison > 0) {
+          const poisonDmg = playerPoison;
+          game.player.hp = Math.max(0, game.player.hp - poisonDmg);
+          log(`你受到${poisonDmg}点中毒伤害`);
+          playerPoison = Math.max(0, playerPoison - 1);
+          if (game.player.hp <= 0) {
+            game.player.hp = 0;
+            game.gameOver = true;
+            game.turn = 'gameover';
+            log('你被击败了，游戏结束');
+            renderAll();
+            return;
+          }
+        }
+
+        if (playerRegen > 0) {
+          const healAmt = Math.min(playerRegen, game.player.maxHp - game.player.hp);
+          game.player.hp += healAmt;
+          log(`你再生回复${healAmt}点生命`);
+          playerRegen = Math.max(0, playerRegen - 1);
+        }
+
+        if (playerWeak > 0) playerWeak--;
+        if (playerVuln > 0) playerVuln--;
+
+        if (playerShield > 0) {
+          log('你的护盾消散');
+          playerShield = 0;
+        }
+        if (enemyShield > 0) {
+          enemyShield = 0;
+        }
+
+        if (!game.gameOver) {
+          game.turn = 'player';
+          game.cardsPlayedThisTurn = 0;
+
+          let energyGain = 2;
+          if (game.player.relics.some(r => r.effect === 'energyCore')) {
+            energyGain += 1;
+            log('能量核心提供额外1点能量');
+          }
+          game.player.energy = Math.min(game.player.maxEnergy, Math.max(3, game.player.energy + energyGain));
+
+          const newCard = getRandomCard(true);
+          game.player.hand.push(newCard);
+          log(`你的回合，抽到 [${newCard.name}]`);
+        }
+        renderAll();
+      }
+
+      function onEndTurn() {
+        if (game.turn !== 'player' || game.gameOver) return;
+        game.turn = 'enemy';
+        log('你结束了回合，敌方行动');
+        renderAll();
+        setTimeout(() => {
+          enemyTurn();
+        }, 400);
+      }
+
+      function renderAll() {
+        const playerHpPercent = (game.player.hp / game.player.maxHp) * 100;
+        playerHpFill.style.width = `${playerHpPercent}%`;
+        playerHpText.textContent = `${game.player.hp}/${game.player.maxHp}`;
+        const enemyHpPercent = (game.enemy.hp / game.enemy.maxHp) * 100;
+        enemyHpFill.style.width = `${enemyHpPercent}%`;
+        enemyHpText.textContent = `${game.enemy.hp}/${game.enemy.maxHp}`;
+
+        energyDisplay.textContent = `${game.player.energy} / ${game.player.maxEnergy}`;
+
+        renderStatusIcons(playerStatusIcons, true);
+        renderStatusIcons(enemyStatusIcons, false);
+
+        if (game.player.relics.length === 0) {
+          relicList.textContent = '无';
+        } else {
+          relicList.innerHTML = game.player.relics.map(r => 
+            `<span class="relic-icon" title="${r.desc}">${r.icon}</span>`
+          ).join(' ');
+        }
+
+        renderHand(playerHandEl, game.player.hand, true);
+        renderHand(enemyHandEl, game.enemy.hand, false);
+
+        const isPlayerTurn = (game.turn === 'player' && !game.gameOver);
+        endTurnBtn.disabled = !isPlayerTurn;
+      }
+
+      function renderStatusIcons(container, isPlayer) {
+        container.innerHTML = '';
+        if (isPlayer) {
+          if (playerShield > 0) container.innerHTML += `<span class="buff-badge">🛡️${playerShield}</span>`;
+          if (playerPoison > 0) container.innerHTML += `<span class="buff-badge">🧪${playerPoison}</span>`;
+          if (playerWeak > 0) container.innerHTML += `<span class="buff-badge">🌫️${playerWeak}</span>`;
+          if (playerVuln > 0) container.innerHTML += `<span class="buff-badge">🔨${playerVuln}</span>`;
+          if (playerRegen > 0) container.innerHTML += `<span class="buff-badge">🌱${playerRegen}</span>`;
+          if (playerStrength > 0) container.innerHTML += `<span class="buff-badge">💪${playerStrength}</span>`;
+        } else {
+          if (enemyShield > 0) container.innerHTML += `<span class="buff-badge">🛡️${enemyShield}</span>`;
+          if (enemyPoison > 0) container.innerHTML += `<span class="buff-badge">🧪${enemyPoison}</span>`;
+          if (enemyWeak > 0) container.innerHTML += `<span class="buff-badge">🌫️${enemyWeak}</span>`;
+          if (enemyVuln > 0) container.innerHTML += `<span class="buff-badge">🔨${enemyVuln}</span>`;
+          if (enemyRegen > 0) container.innerHTML += `<span class="buff-badge">🌱${enemyRegen}</span>`;
+          if (enemyStrength > 0) container.innerHTML += `<span class="buff-badge">💪${enemyStrength}</span>`;
+        }
+      }
+
+      function renderHand(container, hand, isPlayer) {
+        container.innerHTML = '';
+        hand.forEach(card => {
+          const cardEl = document.createElement('div');
+          cardEl.className = 'card';
+          if (!isPlayer) cardEl.classList.add('enemy-card');
+          if (isPlayer && (game.player.energy < card.cost || game.gameOver || game.turn !== 'player')) {
+            cardEl.classList.add('disabled');
+          }
+          if (card.upgraded) cardEl.classList.add('upgraded');
+
+          const costEl = document.createElement('div');
+          costEl.className = 'card-cost';
+          costEl.textContent = card.cost;
+          
+          const iconEl = document.createElement('div');
+          iconEl.className = 'card-icon';
+          iconEl.textContent = card.icon;
+          
+          const nameEl = document.createElement('div');
+          nameEl.className = 'card-name';
+          nameEl.textContent = card.name;
+          
+          const descEl = document.createElement('div');
+          descEl.className = 'card-desc';
+          descEl.textContent = card.desc;
+
+          cardEl.appendChild(costEl);
+          cardEl.appendChild(iconEl);
+          cardEl.appendChild(nameEl);
+          cardEl.appendChild(descEl);
+
+          if (card.upgraded) {
+            const badge = document.createElement('div');
+            badge.className = 'card-upgrade-badge';
+            badge.textContent = '★';
+            cardEl.appendChild(badge);
+          }
+
+          if (isPlayer) {
+            cardEl.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (game.turn !== 'player' || game.gameOver) return;
+              if (game.player.energy < card.cost) return;
+              playPlayerCard(card.uid);
+            });
+          }
+          container.appendChild(cardEl);
+        });
+      }
+
+      endTurnBtn.addEventListener('click', onEndTurn);
+      restartBtn.addEventListener('click', () => {
+        resetGame();
+      });
+
+      resetGame();
+
+    })();
+  </script>
+</body>
+</html>
