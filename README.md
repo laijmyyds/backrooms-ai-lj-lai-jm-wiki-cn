@@ -26,6 +26,7 @@
 @import url("https://cdn.jsdelivr.net/gh/laijmyyds/backrooms-ai-lj-lai-jm-wiki-cn@main/Literary Archive.css");
 @import url("https://cdn.jsdelivr.net/gh/laijmyyds/backrooms-ai-lj-lai-jm-wiki-cn@main/component-styles.css?v=20260916");
 ```
+----
 
 ## 强硬要求
 
@@ -111,33 +112,7 @@
 
 做一个美少女
 
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
-
-做一个美少女
+----
 
 ## 版权所有
 
