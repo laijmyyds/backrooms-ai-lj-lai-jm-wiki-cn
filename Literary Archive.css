@@ -59,7 +59,7 @@
 #skrollr-body {
     background-image:
         linear-gradient(to bottom, rgba(87, 116, 104, 0.2), #f5f8f3 162px),
-        var(--green-wall-base);
+        var(--green-wall-base) !important;
     background-repeat: repeat;
     background-size: 600px;
     width: 100%;
