@@ -70,9 +70,7 @@
    ========================================================================== */
 body {
     background: #f5f8f3;
-    background-image:
-        radial-gradient(ellipse at 20% 30%, rgba(180, 200, 170, 0.06) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 70%, rgba(160, 190, 145, 0.04) 0%, transparent 50%);
+    background-image: none;
     font-family: Inter, "Noto Sans SC", "Noto Sans TC", Arimo, Verdana, Geneva, sans-serif;
     color: #3a4a35;
 }
